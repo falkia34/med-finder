@@ -1,6 +1,8 @@
 package com.example.med_finder
 
+import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,18 +37,9 @@ class PlantAdapter(private var plantList: List<PlantData>) :
 
         fun bind(plant: PlantData) {
             cardText.text = plant.name
-            if (!plant.imageUri.isNullOrEmpty()) {
-                // Load image from URI using Glide
-                Glide.with(itemView.context)
-                    .load(Uri.parse(plant.imageUri)) // Pastikan URI valid
-                    .into(cardImage)
-            } else if (plant.imageRes != 0) {
-                // Load image from drawable resource
-                cardImage.setImageResource(plant.imageRes)
-            } else {
-                // Default image
-                cardImage.setImageResource(R.drawable.default_image)
-            }
+            val imageBytes = Base64.decode(plant.image, Base64.DEFAULT)
+            val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+            cardImage.setImageBitmap(decodedImage)
         }
     }
 }
