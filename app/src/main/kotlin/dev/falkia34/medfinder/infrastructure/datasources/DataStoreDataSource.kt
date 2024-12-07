@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class DataStoreDataSource @Inject constructor(
-    private val preferencesDataStore: DataStore<Preferences>
+    private val preferencesDataStore: DataStore<Preferences>,
 ) {
     suspend fun <T> get(key: Preferences.Key<T>): T? {
         return preferencesDataStore.data.map { preferences ->

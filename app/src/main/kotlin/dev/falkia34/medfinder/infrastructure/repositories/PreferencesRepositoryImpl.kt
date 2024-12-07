@@ -2,10 +2,10 @@ package dev.falkia34.medfinder.infrastructure.repositories
 
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import arrow.core.Either
+import dev.falkia34.medfinder.di.IODispatcher
 import dev.falkia34.medfinder.domain.entities.Failure
 import dev.falkia34.medfinder.domain.repositories.PreferencesRepository
 import dev.falkia34.medfinder.infrastructure.datasources.DataStoreDataSource
-import dev.falkia34.medfinder.di.IODispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -15,7 +15,7 @@ val ONBOARDING_STATUS_KEY = booleanPreferencesKey("onboarding_status")
 
 class PreferencesRepositoryImpl @Inject constructor(
     private val dataStoreDataSource: DataStoreDataSource,
-    @IODispatcher private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    @IODispatcher private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : PreferencesRepository {
 
     override suspend fun getOnboardingStatus(): Either<Failure, Boolean> {

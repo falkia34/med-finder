@@ -44,7 +44,7 @@ object DataSourceModule {
     @Provides
     @Singleton
     fun provideDataStore(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
     ): DataStore<Preferences> {
         return context.dataStore
     }
@@ -52,7 +52,7 @@ object DataSourceModule {
     @Provides
     @Singleton
     fun provideDataStoreDataSource(
-        dataStore: DataStore<Preferences>
+        dataStore: DataStore<Preferences>,
     ): DataStoreDataSource {
         return DataStoreDataSource(dataStore)
     }

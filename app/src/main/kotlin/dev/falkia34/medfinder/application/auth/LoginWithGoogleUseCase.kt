@@ -8,7 +8,7 @@ import dev.falkia34.medfinder.domain.repositories.AuthRepository
 import javax.inject.Inject
 
 class LoginWithGoogleUseCase @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
 ) {
     suspend operator fun invoke(context: Context): Either<Failure, AuthResult> =
         authRepository.loginWithGoogle(context)

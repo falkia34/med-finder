@@ -14,17 +14,9 @@ class SecondIntroFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentSecondIntroBinding.inflate(inflater, container, false)
-
-        binding.buttonNext.setOnClickListener {
-            (parentFragment as IntroFragment).setCurrentItem(2)
-        }
-
-        binding.buttonPrevious.setOnClickListener {
-            (parentFragment as IntroFragment).setCurrentItem(0)
-        }
 
         Glide.with(this).load(R.drawable.second_intro).into(binding.imageFeatured)
 

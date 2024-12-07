@@ -14,17 +14,9 @@ class ThirdIntroFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentThirdIntroBinding.inflate(inflater, container, false)
-
-        binding.buttonNext.setOnClickListener {
-            (parentFragment as IntroFragment).finishOnboarding()
-        }
-
-        binding.buttonPrevious.setOnClickListener {
-            (parentFragment as IntroFragment).setCurrentItem(1)
-        }
 
         Glide.with(this).load(R.drawable.third_intro).into(binding.imageFeatured)
 
@@ -33,6 +25,7 @@ class ThirdIntroFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+
         _binding = null
     }
 }

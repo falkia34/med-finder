@@ -37,10 +37,12 @@ class LoginFragment : Fragment() {
                         Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
                         binding.buttonSignInGoogle.isEnabled = true
                     }
+
                     is LoginState.Success -> {
                         Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
                         navController.navigate(R.id.action_login_to_home)
                     }
+
                     else -> {}
                 }
             }
@@ -48,7 +50,7 @@ class LoginFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
 

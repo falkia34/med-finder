@@ -23,7 +23,7 @@ import javax.inject.Inject
 class AuthRepositoryImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val credentialManager: CredentialManager,
-    @IODispatcher private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    @IODispatcher private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : AuthRepository {
     override suspend fun loginWithGoogle(context: Context): Either<Failure, AuthResult> {
         return withContext(dispatcher) {

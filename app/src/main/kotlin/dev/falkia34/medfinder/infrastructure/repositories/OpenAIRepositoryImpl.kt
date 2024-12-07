@@ -12,10 +12,10 @@ import com.aallam.openai.api.model.ModelId
 import com.aallam.openai.client.OpenAI
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.falkia34.medfinder.R
+import dev.falkia34.medfinder.di.IODispatcher
 import dev.falkia34.medfinder.domain.entities.Failure
 import dev.falkia34.medfinder.domain.entities.Plant
 import dev.falkia34.medfinder.domain.repositories.OpenAIRepository
-import dev.falkia34.medfinder.di.IODispatcher
 import dev.falkia34.medfinder.infrastructure.dto.OpenAIPlant
 import dev.falkia34.medfinder.utils.Uuid
 import kotlinx.coroutines.CoroutineDispatcher
@@ -28,7 +28,7 @@ import kotlin.uuid.ExperimentalUuidApi
 class OpenAIRepositoryImpl @Inject constructor(
     private val openAI: OpenAI,
     @ApplicationContext private val context: Context,
-    @IODispatcher private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    @IODispatcher private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : OpenAIRepository {
     @OptIn(ExperimentalUuidApi::class)
     override suspend fun getImageDetails(image: String): Either<Failure, Plant> {

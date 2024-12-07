@@ -6,7 +6,7 @@ import dev.falkia34.medfinder.domain.repositories.PreferencesRepository
 import javax.inject.Inject
 
 class SetOnboardingStatusUseCase @Inject constructor(
-    private val preferencesRepository: PreferencesRepository
+    private val preferencesRepository: PreferencesRepository,
 ) {
     suspend operator fun invoke(status: Boolean): Either<Failure, Boolean> =
         preferencesRepository.setOnboardingStatus(status)

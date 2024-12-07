@@ -6,7 +6,7 @@ import dev.falkia34.medfinder.domain.repositories.AuthRepository
 import javax.inject.Inject
 
 class GetLoginStatusUseCase @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
 ) {
     suspend operator fun invoke(): Either<Failure, Boolean> = authRepository.getLoginStatus()
 }

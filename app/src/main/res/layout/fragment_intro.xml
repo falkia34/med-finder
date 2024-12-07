@@ -18,8 +18,63 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginBottom="39.5dp"
+        app:layout_constraintBottom_toBottomOf="@id/linear_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/linear_button" />
+
+    <LinearLayout
+        android:id="@+id/linear_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Button
+            android:id="@+id/button_previous"
+            style="?attr/materialIconButtonFilledTonalStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:backgroundTint="@color/md_theme_onPrimaryContainer"
+            android:contentDescription="@string/intro_button_previous"
+            android:padding="6dp"
+            android:textColor="@color/md_theme_primaryContainer"
+            app:icon="@drawable/ic_navigate_before"
+            app:iconSize="32dp" />
+
+        <Button
+            android:id="@+id/button_next"
+            style="?attr/materialIconButtonFilledTonalStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/md_theme_onPrimaryContainer"
+            android:contentDescription="@string/intro_button_next"
+            android:padding="6dp"
+            android:textColor="@color/md_theme_primaryContainer"
+            app:icon="@drawable/ic_navigate_next"
+            app:iconSize="32dp" />
+
+        <Button
+            android:id="@+id/button_get_started"
+            style="@style/Widget.Material3.Button.TonalButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:backgroundTint="@color/md_theme_onPrimaryContainer"
+            android:elevation="0dp"
+            android:iconTint="@color/md_theme_primaryContainer"
+            android:paddingEnd="6dp"
+            android:text="@string/intro_button_get_started"
+            android:textColor="@color/md_theme_primaryContainer"
+            app:icon="@drawable/ic_navigate_next"
+            app:iconGravity="end"
+            app:iconPadding="6dp"
+            app:iconSize="32dp"
+            tools:ignore="RtlSymmetry,UnusedAttribute" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

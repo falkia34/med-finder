@@ -17,7 +17,9 @@ class IntroViewModel @Inject constructor(
     private val setOnboardingStatusUseCase: SetOnboardingStatusUseCase,
 ) : ViewModel() {
     private val _loginStatusState = MutableStateFlow<LoginStatusState>(LoginStatusState.Idle)
+    private val _introState = MutableStateFlow(0)
     val loginStatusState: StateFlow<LoginStatusState> get() = _loginStatusState
+    val introState: StateFlow<Int> get() = _introState
 
     fun checkLoginStatus() {
         viewModelScope.launch {
@@ -30,6 +32,13 @@ class IntroViewModel @Inject constructor(
                 else -> {}
             }
         }
+    }
+
+    fun setCurrentItem(index: Int) {
+        when (index) {
+            0, 1, 2 -> _introState.value = index
+        }
+
     }
 
     fun finishOnboarding() {

@@ -31,7 +31,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.Locale
 
-
 @AndroidEntryPoint
 class DetailsFragment : Fragment() {
     private var _binding: FragmentDetailsBinding? = null
@@ -50,23 +49,23 @@ class DetailsFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.detailsState.flowWithLifecycle(lifecycle).collectLatest { state ->
                 when (state) {
-                    is DetailsState.Error -> {
-                        Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
-                    }
-
+                    is DetailsState.Loading -> binding.progressIndicator.visibility = View.VISIBLE
                     is DetailsState.Success -> {
-                        val imageBytes = Base64.decode(state.plant.image, Base64.DEFAULT)
-                        val decodedImage =
-                            BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+                        binding.progressIndicator.visibility = View.GONE
 
-                        Glide.with(binding.root).load(decodedImage).into(binding.imageFeatured)
-
-                        binding.imageFeatured.contentDescription = state.plant.name
                         binding.textName.text = state.plant.name
                         binding.textName.visibility = View.VISIBLE
                         binding.textLatinName.text = state.plant.latinName
                         binding.textLatinName.visibility = View.VISIBLE
                         binding.textDescription.text = state.plant.description
+                        binding.textDisease.visibility = View.VISIBLE
+                        binding.imageFeatured.contentDescription = state.plant.name
+
+                        val imageBytes = Base64.decode(state.plant.image, Base64.DEFAULT)
+                        val decodedImage =
+                            BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+
+                        Glide.with(binding.root).load(decodedImage).into(binding.imageFeatured)
 
                         binding.chipGroupDisease.removeAllViews()
                         state.plant.disease.map { disease ->
@@ -87,6 +86,12 @@ class DetailsFragment : Fragment() {
                         deleteDialog.dismiss()
                         homeViewModel.refresh()
                         navController.popBackStack()
+                    }
+
+                    is DetailsState.Error -> {
+                        binding.progressIndicator.visibility = View.GONE
+
+                        Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
                     }
 
                     else -> {}
@@ -124,7 +129,7 @@ class DetailsFragment : Fragment() {
                 dialog.cancel()
             }.setNegativeButton(resources.getString(R.string.yes)) { dialog, _ ->
                 dialog.dismiss()
-            }.setPositiveButton(resources.getString(R.string.no)) { dialog, _ ->
+            }.setPositiveButton(resources.getString(R.string.no)) { _, _ ->
                 viewModel.delete(args.id)
             }.create()
 
