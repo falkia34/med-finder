@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    kotlin("plugin.serialization") version "1.4.21"
 }
 
 android {
@@ -40,39 +41,25 @@ android {
 }
 
 dependencies {
-
+    annotationProcessor(libs.compiler)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    // ViewPager2
     implementation(libs.androidx.viewpager2)
-    // CircleIndicator (untuk indikator titik)
     implementation(libs.circleindicator)
-    // Material Components
     implementation(libs.material)
     implementation(libs.glide)
     implementation(libs.androidx.camera.view)
     implementation(libs.androidx.camera.lifecycle)
-    // CameraX Core Library
-    // CameraX Core library
     implementation(libs.androidx.camera.core)
-
-    // CameraX Camera2 Implementation
     implementation(libs.androidx.camera.camera2)
-
-    // CameraX Lifecycle library
     implementation(libs.androidx.camera.lifecycle.v132)
-
-    // CameraX View
     implementation(libs.androidx.camera.view.v132)
-
-    // Optional: CameraX Extensions
     implementation(libs.androidx.camera.extensions)
-    // (Optional) CameraX Extensions (remove if not needed)
-    // implementation(libs.camerax.extensions)
-    annotationProcessor(libs.compiler)
+    implementation(libs.openai.client)
+    runtimeOnly(libs.ktor.client.okhttp)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

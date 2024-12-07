@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.med_finder.databinding.ActivityHomeBinding
+import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.Json
 
 class HomeActivity : AppCompatActivity() {
 
@@ -42,22 +44,22 @@ class HomeActivity : AppCompatActivity() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
 
-        // Example data
-        plantList.add(
-            PlantData(
-                name = "Aloe Vera",
-                description = "Used for skin treatment",
-                imageUri = null // Drawable resource fallback
-            )
-        )
-
-        plantList.add(
-            PlantData(
-                name = "Tulsi",
-                description = "Boosts immunity",
-                imageUri = null
-            )
-        )
+//        // Example data
+//        plantList.add(
+//            PlantData(
+//                name = "Aloe Vera",
+//                description = "Used for skin treatment",
+//                imageUri = null // Drawable resource fallback
+//            )
+//        )
+//
+//        plantList.add(
+//            PlantData(
+//                name = "Tulsi",
+//                description = "Boosts immunity",
+//                imageUri = null
+//            )
+//        )
 
         adapter.notifyDataSetChanged()
     }
@@ -104,19 +106,30 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun handleNewPlantData() {
-        val newPlantName = intent.getStringExtra("NEW_PLANT_NAME")
-        val newPlantDescription = intent.getStringExtra("NEW_PLANT_DESCRIPTION")
-        val photoUri = intent.getStringExtra("PHOTO_URI")
+        val image = intent.getStringExtra("PHOTO_DATA")
 
-        if (!newPlantName.isNullOrEmpty() && !newPlantDescription.isNullOrEmpty() && !photoUri.isNullOrEmpty()) {
-            android.util.Log.d("HomeActivity", "Received Photo URI: $photoUri") // Debugging URI
-            val newPlant = PlantData(
-                name = newPlantName,
-                description = newPlantDescription,
-                imageUri = photoUri // Pastikan URI diteruskan ke adapter
-            )
-            plantList.add(newPlant)
-            adapter.notifyItemInserted(plantList.size - 1)
+        if (!image.isNullOrEmpty()) {
+            android.util.Log.d("HomeActivity", "Received Photo Data") // Debugging URI
+
+            val openAIRepository = OpenAIRepository()
+
+            val data = runBlocking {
+                openAIRepository.generateRespons("data:image/png;base64, $image")
+            }
+
+            val parsedData = Json.decodeFromString<OpenAIResultData>(data!!)
+
+            if (parsedData.is_plant && parsedData.is_medicinal_plant) {
+                val newPlant = PlantData(
+                    name = parsedData.name,
+                    latinName = parsedData.latin_name,
+                    disease = parsedData.disease,
+                    description = parsedData.description,
+                    image = image
+                )
+                plantList.add(newPlant)
+                adapter.notifyItemInserted(plantList.size - 1)
+            }
         }
     }
 }

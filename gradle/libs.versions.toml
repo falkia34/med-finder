@@ -16,6 +16,8 @@ constraintlayout = "2.2.0"
 viewpager2 = "1.1.0"
 cameraView = "1.4.0"
 cameraLifecycle = "1.4.0"
+openaiClient = "4.0.0-beta01"
+ktorClietOkhttp = "3.0.2"
 
 [libraries]
 androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraView" }
@@ -37,6 +39,8 @@ androidx-activity = { group = "androidx.activity", name = "activity", version.re
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "cameraView" }
 androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "cameraLifecycle" }
+openai-client = { group = "com.aallam.openai", name = "openai-client", version.ref = "openaiClient" }
+ktor-client-okhttp = { group = "io.ktor",  name = "ktor-client-okhttp", version.ref = "ktorClietOkhttp" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
