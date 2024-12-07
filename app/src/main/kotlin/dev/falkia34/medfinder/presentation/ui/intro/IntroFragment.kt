@@ -40,9 +40,9 @@ class IntroFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.checkLoginStatus()
-
         requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_USER_PORTRAIT
+
+        viewModel.checkLoginStatus()
 
         lifecycleScope.launch {
             viewModel.introState.flowWithLifecycle(lifecycle).collectLatest { state ->
@@ -80,10 +80,21 @@ class IntroFragment : Fragment() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
             val systemBars =
                 insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars())
+            val displayCutout =
+                insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.displayCutout())
 
-            binding.viewPager.updatePadding(systemBars.left, systemBars.top, systemBars.right, 0)
-            binding.indicator.updatePadding(systemBars.left, 0, 0, systemBars.bottom)
-            binding.linearButton.updatePadding(0, 0, systemBars.right, systemBars.bottom)
+            binding.viewPager.updatePadding(
+                systemBars.left + displayCutout.left,
+                systemBars.top,
+                systemBars.right + displayCutout.right,
+                0
+            )
+            binding.indicator.updatePadding(
+                systemBars.left + displayCutout.left, 0, 0, systemBars.bottom
+            )
+            binding.linearButton.updatePadding(
+                0, 0, systemBars.right + displayCutout.right, systemBars.bottom
+            )
             insets
         }
 

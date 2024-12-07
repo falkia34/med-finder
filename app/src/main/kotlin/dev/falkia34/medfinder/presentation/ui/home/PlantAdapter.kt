@@ -13,7 +13,7 @@ import dev.falkia34.medfinder.databinding.CardItemBinding
 import dev.falkia34.medfinder.domain.entities.Plant
 
 class PlantAdapter(
-    val onItemClick: (String) -> Unit, val onItemDelete: (Int) -> Unit,
+    val onItemClick: (String) -> Unit, val onItemDelete: (String) -> Unit,
 ) : ListAdapter<Plant, PlantAdapter.CardPlantViewHolder>(PlantItemCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardPlantViewHolder {
         val binding = CardItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)

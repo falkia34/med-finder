@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: HomeViewModel by activityViewModels { defaultViewModelProviderFactory }
+    private val viewModel: HomeViewModel by hiltNavGraphViewModels(R.id.navigation_mobile_home)
     private lateinit var adapter: PlantAdapter
     private lateinit var navController: NavController
 
@@ -66,8 +66,8 @@ class HomeFragment : Fragment() {
             val action = HomeFragmentDirections.actionHomeToDetails(id)
 
             navController.navigate(action)
-        }, onItemDelete = { index ->
-            viewModel.delete(index)
+        }, onItemDelete = { id ->
+            viewModel.delete(id)
         })
 
         binding.recyclerViewPlant.layoutManager = layoutManager
@@ -105,7 +105,6 @@ class HomeFragment : Fragment() {
                             dialog.dismiss()
                         }.setPositiveButton(resources.getString(R.string.no)) { dialog, _ ->
                             viewModel.logout()
-                            viewModel.clear()
                             dialog.dismiss()
                             navController.navigate(R.id.action_home_to_login)
                         }.show()
@@ -132,6 +131,7 @@ class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+
         _binding = null
     }
 }

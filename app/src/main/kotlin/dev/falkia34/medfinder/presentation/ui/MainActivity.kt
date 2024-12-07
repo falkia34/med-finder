@@ -1,6 +1,8 @@
 package dev.falkia34.medfinder.presentation.ui
 
 import android.os.Bundle
+import android.view.View
+import android.view.ViewTreeObserver
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -24,8 +26,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         installSplashScreen()
         enableEdgeToEdge()
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -33,6 +37,19 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.fragment_nav_host) as NavHostFragment
 
         viewModel.getStartDestination()
+
+        val content: View = findViewById(android.R.id.content)
+
+        content.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
+            override fun onPreDraw(): Boolean {
+                return if (viewModel.ready) {
+                    content.viewTreeObserver.removeOnPreDrawListener(this)
+                    true
+                } else {
+                    false
+                }
+            }
+        })
 
         lifecycleScope.launch {
             viewModel.startDestination.flowWithLifecycle(lifecycle).collect { startDestination ->
@@ -44,17 +61,9 @@ class MainActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
-        val navController = navHostFragment.navController
+        val navState = navHostFragment.navController.saveState()
 
-        outState.putBundle(NAV_STATE_BUNDLE, navController.saveState())
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-
-        val navController = navHostFragment.navController
-
-        navController.restoreState(savedInstanceState.getBundle(NAV_STATE_BUNDLE))
+        outState.putBundle(NAV_STATE_BUNDLE, navState)
     }
 
     private fun initNavigation(startDestination: Int, savedInstanceState: Bundle?) {
@@ -63,8 +72,7 @@ class MainActivity : AppCompatActivity() {
         val navState = savedInstanceState?.getBundle(NAV_STATE_BUNDLE)
 
         if (navState != null) {
-            navHostFragment.navController.restoreState(navState)
-            navHostFragment.navController.graph = navGraph
+            navHostFragment.navController.setGraph(navGraph, navState)
         } else {
             navGraph.setStartDestination(startDestination)
             navHostFragment.navController.graph = navGraph

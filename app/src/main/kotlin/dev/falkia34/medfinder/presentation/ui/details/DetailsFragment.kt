@@ -10,8 +10,8 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -39,7 +39,7 @@ class DetailsFragment : Fragment() {
     private val args: DetailsFragmentArgs by navArgs()
     private lateinit var deleteDialog: AlertDialog
     private lateinit var navController: NavController
-    private val homeViewModel: HomeViewModel by activityViewModels { defaultViewModelProviderFactory }
+    private val homeViewModel: HomeViewModel by hiltNavGraphViewModels(R.id.navigation_mobile_home)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,6 +77,7 @@ class DetailsFragment : Fragment() {
                                     ) else it.toString()
                                 }
                             }
+                            chip.setEnsureMinTouchTargetSize(false)
 
                             binding.chipGroupDisease.addView(chip)
                         }
@@ -84,7 +85,7 @@ class DetailsFragment : Fragment() {
 
                     is DetailsState.Deleted -> {
                         deleteDialog.dismiss()
-                        homeViewModel.refresh()
+                        homeViewModel.delete(args.id, true)
                         navController.popBackStack()
                     }
 
@@ -153,5 +154,11 @@ class DetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         navController = findNavController()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        _binding = null
     }
 }

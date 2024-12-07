@@ -1,6 +1,7 @@
 package dev.falkia34.medfinder.infrastructure.repositories
 
 import android.content.Context
+import android.util.Log
 import arrow.core.Either
 import com.aallam.openai.api.chat.ChatCompletion
 import com.aallam.openai.api.chat.ChatCompletionRequest
@@ -30,6 +31,8 @@ class OpenAIRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     @IODispatcher private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : OpenAIRepository {
+    private val json = Json { coerceInputValues = true }
+
     @OptIn(ExperimentalUuidApi::class)
     override suspend fun getImageDetails(image: String): Either<Failure, Plant> {
         return withContext(dispatcher) {
@@ -60,26 +63,31 @@ class OpenAIRepositoryImpl @Inject constructor(
                 val content = completion.choices[0].message.content
 
                 if (content != null) {
-                    val decodedContent = Json.decodeFromString<OpenAIPlant>(content)
+                    val decodedContent = json.decodeFromString<OpenAIPlant>(content)
 
-                    if (decodedContent.is_plant && decodedContent.is_medicinal_plant) {
-                        val result = Plant(
-                            Uuid.v7().toString(),
-                            image,
-                            decodedContent.name,
-                            decodedContent.latin_name,
-                            decodedContent.description,
-                            decodedContent.disease,
-                        )
+                    if (decodedContent.isPlant) {
+                        if (decodedContent.isMedicinalPlant) {
+                            val result = Plant(
+                                Uuid.v7().toString(),
+                                image,
+                                decodedContent.name,
+                                decodedContent.latinName,
+                                decodedContent.description,
+                                decodedContent.disease,
+                            )
 
-                        return@withContext Either.Right(result)
+                            return@withContext Either.Right(result)
+                        } else {
+                            return@withContext Either.Left(Failure.NotMedicalPlant())
+                        }
                     } else {
-                        return@withContext Either.Left(Failure.NoContent())
+                        return@withContext Either.Left(Failure.NotPlant())
                     }
                 } else {
                     return@withContext Either.Left(Failure.NoContent())
                 }
             } catch (e: Exception) {
+                Log.d("OpenAI", e.toString())
                 return@withContext Either.Left(Failure.Unknown())
             }
         }

@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.falkia34.medfinder.R
 import dev.falkia34.medfinder.application.auth.GetLoginStatusUseCase
 import dev.falkia34.medfinder.application.intro.GetOnboardingStatusUseCase
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
@@ -19,6 +20,7 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
     private val _startDestination = MutableSharedFlow<Int>()
     val startDestination: SharedFlow<Int> get() = _startDestination
+    var ready = false
 
     fun getStartDestination() {
         viewModelScope.launch {
@@ -30,6 +32,9 @@ class MainViewModel @Inject constructor(
                     if (!onboardingStatus.value) _startDestination.emit(R.id.nav_fragment_intro)
                     if (onboardingStatus.value && !loginStatus.value) _startDestination.emit(R.id.nav_fragment_login)
                     if (onboardingStatus.value && loginStatus.value) _startDestination.emit(R.id.navigation_mobile_home)
+
+                    delay(200)
+                    ready = true
                 }
 
                 else -> {}

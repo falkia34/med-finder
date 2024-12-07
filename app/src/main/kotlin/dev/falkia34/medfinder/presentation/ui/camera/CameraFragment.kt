@@ -1,8 +1,10 @@
 package dev.falkia34.medfinder.presentation.ui.camera
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
-import android.content.res.Configuration
+import android.content.res.Resources
 import android.os.Bundle
 import android.util.Base64
 import android.util.Size
@@ -22,14 +24,19 @@ import androidx.camera.core.resolutionselector.ResolutionSelector
 import androidx.camera.core.resolutionselector.ResolutionStrategy
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import dev.falkia34.medfinder.R
 import dev.falkia34.medfinder.databinding.FragmentCameraBinding
 import dev.falkia34.medfinder.presentation.viewmodels.camera.CameraViewModel
 import dev.falkia34.medfinder.presentation.viewmodels.camera.ImageDetailsState
@@ -38,14 +45,13 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import kotlin.math.roundToInt
 
 val CAMERA_REQUIRED_PERMISSION = arrayOf(Manifest.permission.CAMERA)
 
 @AndroidEntryPoint
 class CameraFragment : Fragment() {
     private var _binding: FragmentCameraBinding? = null
-    private var orientation: Int? = null
-    private var screenSize: Size? = null
     private var resolutionSelector: ResolutionSelector? = null
     private var preview: Preview? = null
     private var imageCapture: ImageCapture? = null
@@ -53,12 +59,16 @@ class CameraFragment : Fragment() {
     private var cameraProvider: ProcessCameraProvider? = null
     private var cameraExecutor: ExecutorService? = null
     private lateinit var navController: NavController
+    private lateinit var windowInsetsController: WindowInsetsControllerCompat
     private val binding get() = _binding!!
     private val viewModel: CameraViewModel by viewModels()
-    private val homeViewModel: HomeViewModel by activityViewModels { defaultViewModelProviderFactory }
+    private val homeViewModel: HomeViewModel by hiltNavGraphViewModels(R.id.navigation_mobile_home)
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_USER_PORTRAIT
 
         lifecycleScope.launch {
             viewModel.imageDetailsState.flowWithLifecycle(lifecycle).collectLatest { state ->
@@ -73,7 +83,7 @@ class CameraFragment : Fragment() {
                     is ImageDetailsState.Success -> {
                         binding.progressIndicator.visibility = View.GONE
 
-                        homeViewModel.loadMore()
+                        homeViewModel.add(listOf(state.plant))
 
                         val action = CameraFragmentDirections.actionCameraToDetails(state.plant.id)
 
@@ -105,12 +115,40 @@ class CameraFragment : Fragment() {
     ): View {
         _binding = FragmentCameraBinding.inflate(inflater, container, false)
 
-        orientation = resources.configuration.orientation
-        screenSize = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            Size(480, 640)
-        } else {
-            Size(640, 480)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
+            val systemBars =
+                insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars())
+            val displayCutout =
+                insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.displayCutout())
+
+            val appBarLayoutParams = (binding.appBar.layoutParams as ViewGroup.MarginLayoutParams)
+            val buttonCaptureLayoutParams =
+                (binding.buttonCapture.layoutParams as ViewGroup.MarginLayoutParams)
+
+            appBarLayoutParams.setMargins(
+                systemBars.left + displayCutout.left,
+                systemBars.top,
+                systemBars.right + displayCutout.right,
+                0
+            )
+            buttonCaptureLayoutParams.setMargins(
+                systemBars.left + displayCutout.left,
+                0,
+                systemBars.right + displayCutout.right,
+                systemBars.bottom + (16 * Resources.getSystem().displayMetrics.density).roundToInt()
+            )
+
+            binding.appBar.layoutParams = appBarLayoutParams
+            binding.buttonCapture.layoutParams = buttonCaptureLayoutParams
+
+            insets
         }
+
+        windowInsetsController =
+            WindowCompat.getInsetsController(requireActivity().window, binding.root)
+        windowInsetsController.systemBarsBehavior =
+            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
 
         binding.materialToolbar.setNavigationOnClickListener {
             navController.popBackStack()
@@ -141,6 +179,10 @@ class CameraFragment : Fragment() {
         super.onDestroy()
 
         cameraExecutor?.shutdown()
+        windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
+
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+        _binding = null
     }
 
     private fun checkSelfPermissionsGranted() = CAMERA_REQUIRED_PERMISSION.all {
@@ -170,7 +212,7 @@ class CameraFragment : Fragment() {
 
             resolutionSelector = ResolutionSelector.Builder().setResolutionStrategy(
                 ResolutionStrategy(
-                    screenSize!!, ResolutionStrategy.FALLBACK_RULE_CLOSEST_HIGHER_THEN_LOWER
+                    Size(480, 640), ResolutionStrategy.FALLBACK_RULE_CLOSEST_HIGHER_THEN_LOWER
                 )
             ).build()
             preview = Preview.Builder().setResolutionSelector(resolutionSelector!!).build().also {

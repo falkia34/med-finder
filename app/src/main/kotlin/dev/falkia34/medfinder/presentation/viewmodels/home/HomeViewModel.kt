@@ -73,17 +73,21 @@ class HomeViewModel @Inject constructor(
         loadMore()
     }
 
-    fun clear() {
-        _homeState.value = HomeState.Idle
-        _plants.value = emptyList()
-        _cursor.value = null
+    fun add(plants: List<Plant>) {
+        _plants.value += plants
     }
 
-    fun delete(index: Int) {
+    fun delete(id: String, localOnly: Boolean = false) {
         viewModelScope.launch {
-            deletePlantUseCase(_plants.value[index].id)
+            if (!localOnly) {
+                deletePlantUseCase(id)
+            }
 
-            _plants.value = mutableListOf(_plants.value).removeAt(index)
+            val newPlants = _plants.value.toMutableList()
+
+            newPlants.removeAt(_plants.value.indexOfFirst { it.id == id })
+
+            _plants.value = newPlants
         }
     }
 }

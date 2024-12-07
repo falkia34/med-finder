@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_mobile"
-    tools:ignore="InvalidNavigation">
+    app:startDestination="@id/nav_fragment_intro">
 
     <fragment
         android:id="@+id/nav_fragment_intro"
@@ -13,11 +13,15 @@
         <action
             android:id="@+id/action_intro_to_login"
             app:destination="@id/nav_fragment_login"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
             app:popUpTo="@id/nav_fragment_intro"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_intro_to_home"
             app:destination="@id/navigation_mobile_home"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
             app:popUpTo="@id/nav_fragment_intro"
             app:popUpToInclusive="true" />
     </fragment>
@@ -30,6 +34,8 @@
         <action
             android:id="@+id/action_login_to_home"
             app:destination="@id/navigation_mobile_home"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
             app:popUpTo="@id/nav_fragment_login"
             app:popUpToInclusive="true" />
     </fragment>
@@ -46,15 +52,25 @@
             <action
                 android:id="@+id/action_home_to_login"
                 app:destination="@id/nav_fragment_login"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
                 app:popUpTo="@id/nav_fragment_home"
                 app:popUpToInclusive="true" />
             <action
                 android:id="@+id/action_home_to_camera"
                 app:destination="@id/nav_fragment_camera"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"
                 app:popUpTo="@id/nav_fragment_home" />
             <action
                 android:id="@+id/action_home_to_details"
                 app:destination="@id/nav_fragment_details"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"
                 app:popUpTo="@id/nav_fragment_home" />
         </fragment>
 
@@ -66,6 +82,8 @@
             <action
                 android:id="@+id/action_camera_to_details"
                 app:destination="@id/nav_fragment_details"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
                 app:popUpTo="@id/nav_fragment_home" />
         </fragment>
 

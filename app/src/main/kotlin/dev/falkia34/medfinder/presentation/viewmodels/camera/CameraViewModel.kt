@@ -27,8 +27,7 @@ class CameraViewModel @Inject constructor(
 
             when (imageDetails) {
                 is Either.Left -> {
-                    _imageDetailsState.value =
-                        ImageDetailsState.Error("Failed to get image details!")
+                    _imageDetailsState.value = ImageDetailsState.Error(imageDetails.value.message)
                     return@launch
                 }
 

@@ -1,13 +1,14 @@
 package dev.falkia34.medfinder.infrastructure.dto
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class OpenAIPlant(
-    val is_plant: Boolean,
-    val is_medicinal_plant: Boolean,
+    @SerialName("is_plant") val isPlant: Boolean,
+    @SerialName("is_medicinal_plant") val isMedicinalPlant: Boolean,
     val name: String = "",
-    val latin_name: String = "",
-    val disease: List<String>,
+    @SerialName("latin_name") val latinName: String = "",
+    val disease: List<String> = emptyList(),
     val description: String = "",
 )
