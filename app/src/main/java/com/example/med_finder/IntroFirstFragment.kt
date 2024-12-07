@@ -12,6 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.example.med_finder.databinding.FragmentIntroFirstBinding
 
 class IntroFirstFragment : Fragment() {
@@ -32,6 +33,11 @@ class IntroFirstFragment : Fragment() {
             )
             insets
         }
+
+        // Muat gambar menggunakan Glide
+        Glide.with(this)
+            .load(R.drawable.intro1) // URL gambar
+            .into(binding.imageView) // Ganti `imageView` dengan ID ImageView Anda di layout
 
         // Tombol Learn More untuk pindah ke halaman kedua
         binding.learnMoreButton.setOnClickListener {

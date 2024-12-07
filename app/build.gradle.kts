@@ -48,13 +48,31 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     // ViewPager2
     implementation(libs.androidx.viewpager2)
-
     // CircleIndicator (untuk indikator titik)
     implementation(libs.circleindicator)
-
     // Material Components
     implementation(libs.material)
+    implementation(libs.glide)
+    implementation(libs.androidx.camera.view)
+    implementation(libs.androidx.camera.lifecycle)
+    // CameraX Core Library
+    // CameraX Core library
+    implementation(libs.androidx.camera.core)
 
+    // CameraX Camera2 Implementation
+    implementation(libs.androidx.camera.camera2)
+
+    // CameraX Lifecycle library
+    implementation(libs.androidx.camera.lifecycle.v132)
+
+    // CameraX View
+    implementation(libs.androidx.camera.view.v132)
+
+    // Optional: CameraX Extensions
+    implementation(libs.androidx.camera.extensions)
+    // (Optional) CameraX Extensions (remove if not needed)
+    // implementation(libs.camerax.extensions)
+    annotationProcessor(libs.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

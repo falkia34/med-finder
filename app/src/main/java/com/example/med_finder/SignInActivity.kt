@@ -26,21 +26,21 @@ class SignInActivity : AppCompatActivity() {
         // Tombol Sign In
         val signInButton = findViewById<Button>(R.id.signInButton)
         signInButton.setOnClickListener {
-            // Pindah ke halaman utama atau dashboard setelah berhasil sign in
-            val intent = Intent(this, MainActivity::class.java)
+            // Pindah ke halaman Home tanpa autentikasi
+            val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
+            finish() // Menutup SignInActivity
         }
 
         // Google Sign-In Button
         val googleSignInButton = findViewById<ImageView>(R.id.googleSignInButton)
         googleSignInButton.setOnClickListener {
-            // Tambahkan logika untuk Google Sign-In di sini
-            // Misalnya, gunakan Firebase Auth atau API lainnya
+            // Logika untuk Google Sign-In (opsional untuk pengembangan ke depan)
         }
 
+        // Navigasi ke halaman Sign Up
         val signUpText = findViewById<TextView>(R.id.signUpNow)
         signUpText.setOnClickListener {
-            // Pindah ke halaman sign up
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
         }
