@@ -105,8 +105,6 @@ class CameraFragment : Fragment() {
     ): View {
         _binding = FragmentCameraBinding.inflate(inflater, container, false)
 
-        navController = findNavController()
-
         orientation = resources.configuration.orientation
         screenSize = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             Size(480, 640)
@@ -127,6 +125,8 @@ class CameraFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        navController = findNavController()
 
         if (checkSelfPermissionsGranted()) {
             startCamera()
