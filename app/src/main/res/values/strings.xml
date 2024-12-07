@@ -1,5 +1,36 @@
 <resources>
-    <string name="app_name">Med-Finder</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_name">MedFinder</string>
+    <string name="google_web_client_id">693309419823-lps8fgm9rbraj67flig70l3v6585lbil.apps.googleusercontent.com</string>
+    <string name="intro_button_next">Next</string>
+    <string name="intro_button_previous">Previous</string>
+    <string name="first_intro_image_featured_description">First intro\'s featured image.</string>
+    <string name="first_intro_text_title">Get to Know About Medical Plant</string>
+    <string name="first_intro_text_description">Medicinal plants are a treasure trove of natural health solutions. Discover their benefits and how they can support your journey to a healthier life.</string>
+    <string name="second_intro_image_featured_description">Second intro\'s featured image.</string>
+    <string name="second_intro_text_title">Discover Plants with AI</string>
+    <string name="second_intro_text_description">Leverage cutting-edge AI technology to identify medicinal plants effortlessly. Just take a photo, and our app will provide detailed information about the plant’s name, uses, and health benefits.</string>
+    <string name="third_intro_image_featured_description">Third intro\'s featured image.</string>
+    <string name="third_intro_text_title">Your Path to Better Health Starts Here</string>
+    <string name="third_intro_text_description">Embark on a journey toward a healthier lifestyle with trusted insights about medicinal plants. Let us guide you step by step to unlock the power of nature.</string>
+    <string name="login_text_title">Welcome!</string>
+    <string name="login_text_subtitle">Let\'s sign you in, and start your journey!</string>
+    <string name="login_button_sign_in_google">Sign in with Google</string>
+    <string name="menu_app_bar_home_logout_description">Logout</string>
+    <string name="menu_app_bar_home_logout_title">Logout</string>
+    <string name="menu_app_bar_details_delete_description">Delete</string>
+    <string name="menu_app_bar_details_delete_title">Delete</string>
+    <string name="prompt_image">data:image/jpeg;base64,%1$s</string>
+    <string name="prompt_image_details">Deskripsikan tanaman berikut dalam bahasa Indonesia, dengan ketentuan:\\n1. Jika bukan termasuk tanaman, maka beri respons JSON is_plant false, is_medical_plant false, dan lainnya null.\\n2. Jika termasuk tanaman tapi tidak memiliki khasiat pengobatan, maka beri respons JSON is_plant true, is_medical_plant false, nama tanaman, lalu kosongkan penyakit serta deskripsi (null).\\n3. Jika termasuk tanaman obat, maka berikan nama tanamannya, obat untuk penyakit apa saja, serta deskripsi khasiatnya.\\n\\nBerikan respons berupa JSON dengan format:\\n{\\\"is_plant\\\": boolean, \\\"is_medicinal_plant\\\": boolean, \\\"name\\\": nullable string, \\\"latin_name\\\": nullable string, \\\"disease\\\": nullable list string, \\\"description\\\": nullable string}</string>
+    <string name="home_button_scan">Scan</string>
+    <string name="camera_button_capture">Take Photo</string>
+    <string name="details_text_name">Name Placeholder</string>
+    <string name="details_text_latin_name">Latin name placeholder</string>
+    <string name="details_text_disease">Khasiat Pengobatan</string>
+    <string name="details_dialog_delete_title">Delete Confirmation</string>
+    <string name="details_dialog_delete_description">Are you sure you want to delete this plant?</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">No</string>
+    <string name="no">Yes</string>
+    <string name="home_dialog_logout_title">Logout Confirmation</string>
+    <string name="home_dialog_logout_description">Are you sure you want to logout?</string>
 </resources>

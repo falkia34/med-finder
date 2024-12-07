@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "693309419823",
+    "project_id": "medfinder-78d52",
+    "storage_bucket": "medfinder-78d52.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:693309419823:android:6f1dd7c3f17c3d811431da",
+        "android_client_info": {
+          "package_name": "dev.falkia34.medfinder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "693309419823-tq6f8j4qobipdqrt4h90p4it9v9mfdtq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.falkia34.medfinder",
+            "certificate_hash": "b66bbc9ea3a9adf2d3dafd90adbfcd3d0b07d713"
+          }
+        },
+        {
+          "client_id": "693309419823-lps8fgm9rbraj67flig70l3v6585lbil.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBH5Ts0wSPjezMs6xsXyLL8P29kPjTrWrE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "693309419823-lps8fgm9rbraj67flig70l3v6585lbil.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

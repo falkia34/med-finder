@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <item
+        android:id="@+id/action_logout"
+        android:contentDescription="@string/menu_app_bar_home_logout_description"
+        android:icon="@drawable/ic_logout"
+        android:title="@string/menu_app_bar_home_logout_title"
+        app:showAsAction="ifRoom"
+        tools:ignore="UnusedAttribute" />
+
+</menu>
